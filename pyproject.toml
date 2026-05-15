@@ -3,7 +3,7 @@ name = "readi-privacy"
 dynamic = ["version"]
 description = "A collection of funcionality to perform data classification, data privacy risk assessment, and enforce mitigation"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.14"
 authors = [
   {name = "Stefano Braghin", email = "stefanob@ie.ibm.com"},
   {name = "Liubov Nedoshivina", email = "liubov.nedoshivina@ibm.com"},
@@ -50,10 +50,6 @@ dependencies = [
     "word2number==1.1",
 ]
 [project.optional-dependencies]
-wnlp = [
-  "watson-nlp==5.5.0",
-  "semver==2.13.0",
-]
 rest = [
   "fastapi==0.136.1",
   "python-dotenv==1.2.2",

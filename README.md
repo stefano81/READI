@@ -1,7 +1,7 @@
 # 🔒 READI - Risk Evaluation and De-Identification
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.11%20|%203.12%20|%203.13-blue.svg)](https://www.python.org/downloads/)
 [![Lint](https://github.com/IBM/READI/actions/workflows/lint.yml/badge.svg)](https://github.com/IBM/READI/actions/workflows/lint.yml)
 [![Testing](https://github.com/IBM/READI/actions/workflows/testing.yml/badge.svg)](https://github.com/IBM/READI/actions/workflows/testing.yml)
 [![Publish to PyPI](https://github.com/IBM/READI/actions/workflows/publish.yml/badge.svg)](https://github.com/IBM/READI/actions/workflows/publish.yml)
