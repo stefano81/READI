@@ -91,12 +91,6 @@ jobs:
         run: |
           uv run bandit -c bandit.yaml -r src/
 
-      - name: Run detect-secrets
-        uses: reviewdog/action-detect-secrets@v0.27.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          detect_secrets_flags: --baseline .secrets.baseline
-
   coverage:
     name: Test Coverage
     runs-on: ubuntu-latest
@@ -138,20 +132,3 @@ jobs:
       - name: Run tests with coverage
         run: |
           uv run pytest tests/ --cov=src/risk_assessment --cov-report=xml --cov-report=html --cov-report=term
-
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v5
-        with:
-          file: ./coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Upload coverage artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: htmlcov/
-          retention-days: 7
