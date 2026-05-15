@@ -85,19 +85,23 @@ packages = [
   "src/risk_assessment"
 ]
 artifacts = [
-  "risk_assessment/classification/identifiers/data/*.csv",
-  "risk_assessment/classification/identifiers/data/*.dict",
-  "risk_assessment/classification/identifiers/data/*.txt",
-  "risk_assessment/classification/identifiers/data/common/*.csv",
-  "risk_assessment/classification/identifiers/data/en/*.csv",
-  "risk_assessment/classification/identifiers/data/french_zipcodes",
-  "risk_assessment/classification/identifiers/data/it/*.csv",
-  "risk_assessment/classification/identifiers/data/uk/*.csv",
-  "risk_assessment/classification/identifiers/data/us/*.csv",
-  "risk_assessment/classification/identifiers/healthcare/data/*.csv",
-  "risk_assessment/classification/identifiers/healthcare/data/en/*.csv",
-  "risk_assessment/classification/identifiers/healthcare/data/en/*.parquet",
-  "risk_assessment/utility/hierarchy/datatypes/data/*csv",
+  "src/risk_assessment/classification/identifiers/data/*.csv",
+  "src/risk_assessment/classification/identifiers/data/*.dict",
+  "src/risk_assessment/classification/identifiers/data/*.txt",
+  "src/risk_assessment/classification/identifiers/data/french_zipcodes",
+  "src/risk_assessment/classification/identifiers/data/common/*.csv",
+  "src/risk_assessment/classification/identifiers/data/common/*.dat",
+  "src/risk_assessment/classification/identifiers/data/common/*.txt",
+  "src/risk_assessment/classification/identifiers/data/en/*.csv",
+  "src/risk_assessment/classification/identifiers/data/gr/*.csv",
+  "src/risk_assessment/classification/identifiers/data/it/*.csv",
+  "src/risk_assessment/classification/identifiers/data/it/*.txt",
+  "src/risk_assessment/classification/identifiers/data/ja/*.csv",
+  "src/risk_assessment/classification/identifiers/data/uk/*.csv",
+  "src/risk_assessment/classification/identifiers/data/us/*.csv",
+  "src/risk_assessment/classification/identifiers/healthcare/data/*.csv",
+  "src/risk_assessment/classification/identifiers/healthcare/data/en/*.csv",
+  "src/risk_assessment/classification/identifiers/healthcare/data/en/*.parquet",
 ]
 
 [tool.hatch.version]
