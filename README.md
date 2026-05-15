@@ -30,7 +30,7 @@ READI augments the functionalities provided by [IBM Data Privacy Toolkit](https:
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.11 or higher
 - Git with [git-lfs](https://git-lfs.com/) support (for large files >50 MB)
 - [uv](https://docs.astral.sh/uv/) (recommended) - A fast Python package installer
 
