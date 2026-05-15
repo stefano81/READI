@@ -133,7 +133,6 @@ env.bak/
 venv.bak/
 
 # uv
-uv.lock
 .uv/
 
 # API Keys and Secrets
