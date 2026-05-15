@@ -31,7 +31,7 @@ dependencies = [
     "google-re2==1.1.20251105",
     "huggingface-hub>=0.34.0,<1.0",
     "mecab-python3==1.0.9",
-    "nltk==3.9.1",
+    "nltk==3.9.4",
     "opt_einsum==3.3.0",
     "pandas==3.0.2",
     "pip>=26.0.0",
