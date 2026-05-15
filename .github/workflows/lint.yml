@@ -39,7 +39,7 @@ jobs:
         run: |
           uv run ruff format --check src/ tests/
 
-      - name: Run mypy type checking
+      - name: Run ty type checking
         run: |
-          uv run mypy src/
+          uv run ty check
         continue-on-error: true
