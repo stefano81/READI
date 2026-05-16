@@ -81,7 +81,7 @@ class NIRFrance(Identifier):
     """
 
     pattern = re.compile(
-        r"^([7182]\d{14})$|^([7182])( )(\d{2})( )(\d{2})( )(\d{2})( )(\d{3})( )(\d{3})( )(\d{2})$|^([7128]\d{12} \d{2})$|^([7182]\d{4}2[AB]\d{8})$|^([7182])( )(\d{2})( )(\d{2})( )(2[AB])( )(\d{3})( )(\d{3})( )(\d{2})$"
+        r"^(([7182]\d{14})|([7182])( )(\d{2})( )(\d{2})( )(\d{2})( )(\d{3})( )(\d{3})( )(\d{2})|([7128]\d{12} \d{2})|([7182]\d{4}2[AB]\d{8})|([7182])( )(\d{2})( )(\d{2})( )(2[AB])( )(\d{3})( )(\d{3})( )(\d{2}))$"
     )
 
     def is_of_this_type(self, text: str) -> bool:
@@ -117,7 +117,7 @@ class TINGermany(Identifier):
     """
 
     pattern = re.compile(
-        r"^([1-9]\d{11})$|^([1-9]\d \d{3} \d{3} \d{3})$|^([1-9][0-9])([,])(d{3})([,])(\d{3})([,])(\d{3})$|^([1-9][0-9])([.])(d{3})([.])(\d{3})([.])(\d{3})$|^([1-9][0-9])([\/])(d{3})([\/])(\d{3})([\/])(\d{3})$|^([1-9]\d{10})$"
+        r"^(([1-9]\d{11})|([1-9]\d \d{3} \d{3} \d{3})|([1-9][0-9])([,])(d{3})([,])(\d{3})([,])(\d{3})|([1-9][0-9])([.])(d{3})([.])(\d{3})([.])(\d{3})|([1-9][0-9])([\/])(d{3})([\/])(\d{3})([\/])(\d{3})|([1-9]\d{10}))$"
     )  # noqa
 
     def check_last_digit(self, first_ten_digits: list[str], check_digit: str) -> bool:
@@ -182,7 +182,7 @@ class TINGermany(Identifier):
 
 
 class AadhaarNumber(Identifier):
-    pattern = re.compile(r"^([2-9]\d{3} \d{4} \d{4})$|^([2-9]\d{11})$")
+    pattern = re.compile(r"^(([2-9]\d{3} \d{4} \d{4})|([2-9]\d{11}))$")
 
     def is_of_this_type(self, text: str) -> bool:
         # https://en.wikipedia.org/wiki/Aadhaar
@@ -312,7 +312,7 @@ class ItalianFiscalCode(Identifier):
 
 class MyNumberJapan(Identifier):
     pattern = re.compile(
-        r"^(\d{4}.\d{4}.\d{4})$|^(\d{4},\d{4},\d{4})$|^(\d{4}-\d{4}-\d{4})|(\d{4} \d{4} \d{4})$|^(\d{12})$"
+        r"^((\d{4}.\d{4}.\d{4})|(\d{4},\d{4},\d{4})|(\d{4}-\d{4}-\d{4})|(\d{4} \d{4} \d{4})|(\d{12}))$"
     )
 
     def is_of_this_type(self, text: str) -> bool:
@@ -364,46 +364,44 @@ class IsraelID(LuhnIdentifier):
 
 
 class MexicoCURP(Identifier):
-    pattern = re.compile(
-        r"^[A-Z][AEIOU][A-Z]{2}(\d{2})(\d{2})(\d{2})[HMX]([A-Z]{2})[BCDFGHJKLMNPQRSTVWXYZ]{3}([A-Z0-9])(\d)"
-    )
+    pattern = re.compile(r"^[A-Z][AEIOU][A-Z]{2}(\d{2})(\d{2})(\d{2})[HMX]([A-Z]{2})[A-Z]{3}([A-Z0-9])(\d)")
     #  http://www.statoids.com/umx.html
     states: set[str] = {
-        "AG",
-        "BN",
+        "AS",
+        "BC",
         "BS",
-        "CA",
+        "CC",
+        "CS",
         "CH",
+        "DF",
         "CL",
         "CM",
-        "COCP",
-        "DF",
-        "DU",
-        "GJ",
+        "DG",
+        "GT",
         "GR",
-        "HI",
-        "JA",
+        "HG",
+        "JC",
         "MC",
-        "MR",
-        "MX",
-        "NA",
+        "MN",
+        "MS",
+        "NT",
         "NL",
-        "OA",
-        "PU",
-        "QE",
+        "OC",
+        "PL",
+        "QO",
         "QR",
-        "SI",
+        "SP",
         "SL",
-        "SO",
-        "TB",
+        "SR",
+        "TC",
+        "TS",
         "TL",
-        "TM",
-        "VE",
         "VZ",
-        "YU",
-        "ZA",
+        "YN",
+        "ZS",
         "NE",  # code for people born abroad
     }
+    CURP_CHARACTERS = "0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
 
     def is_of_this_type(self, text: str) -> bool:
         match = MexicoCURP.pattern.match(text)
@@ -414,17 +412,34 @@ class MexicoCURP(Identifier):
             day = int(match.group(3), base=10)
             state = match.group(4)
             century_flag = match.group(5)
-            parity = match.group(6)  # noqa
+            # parity = match.group(6)  # noqa
 
             if all(c.isdigit() for c in century_flag):
                 year = int(f"20{year_2d}")
             else:
                 year = int(f"19{year_2d}")
 
-            if state in self.states and _valid_birth_date(day, month, year):
-                return True
+            if state in self.states:
+                if _valid_birth_date(day, month, year):
+                    if _valid_curp_parity(text):
+                        return True
 
         return False
+
+
+def _valid_curp_parity(text: str) -> bool:
+    """Validate the parity check digit of a Mexican CURP.
+
+    Args:
+        text: The CURP string to validate.
+
+    Returns:
+        True if the parity check digit is valid, False otherwise.
+    """
+    start = 18
+    return text[-1] == str(
+        -sum((start - i) * MexicoCURP.CURP_CHARACTERS.index(n) for i, n in enumerate(text[:-1])) % 10
+    )
 
 
 class CanadaSIN(LuhnIdentifier):
