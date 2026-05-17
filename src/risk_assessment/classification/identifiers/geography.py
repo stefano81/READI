@@ -16,7 +16,7 @@ from risk_assessment.classification.identifiers import DictionaryIdentifier, Ide
 logger = logging.getLogger(__name__)
 
 
-def _extract_all_langugage_city_names(file: str) -> list[str]:
+def _extract_all_language_city_names(file: str) -> list[str]:
     """Extract city names from a multi-language file.
 
     Args:
@@ -683,7 +683,7 @@ class UnitedStateState(DictionaryIdentifier):
                 "GU",
                 "Guam",
                 "VI",
-                "Vigin Islands",
+                "Virgin Islands",
                 "PR",
                 "Puerto Rico",
                 "FM",
