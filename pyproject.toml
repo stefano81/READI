@@ -3,7 +3,7 @@ name = "readi-privacy"
 dynamic = ["version"]
 description = "A collection of functionality to perform data classification, data privacy risk assessment, and enforce mitigation"
 readme = "README.md"
-requires-python = ">=3.11,<3.14"
+requires-python = ">=3.11.5,<3.14"
 authors = [
   {name = "Stefano Braghin", email = "stefanob@ie.ibm.com"},
   {name = "Liubov Nedoshivina", email = "liubov.nedoshivina@ibm.com"},
@@ -41,7 +41,7 @@ dependencies = [
     "spacy==3.8.18",
     "SPARQLWrapper==2.0.0",
     "tika==3.4.0",
-    "transformers==5.22.2",
+    "transformers==5.24.1",
     "unidic-lite==1.0.8",
     "urllib3==2.8.0",
     "word2number==1.1",
@@ -51,16 +51,16 @@ dependencies = [
 ]
 [project.optional-dependencies]
 stanza = [
-  "stanza==1.15.0",
+  "stanza==1.15.1",
 ]
 rest = [
-  "fastapi==0.162.4",
+  "fastapi==0.165.0",
 ]
 # flair = [
 #   "flair>=0.15.1",
 # ]
 presidio = [
-  "presidio-analyzer==2.2.364",
+  "presidio-analyzer==2.2.366",
 ]
 dev = [
   "bandit",

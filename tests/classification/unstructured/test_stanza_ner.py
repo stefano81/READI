@@ -2,9 +2,16 @@
 
 import pytest
 
-pytest.importorskip("stanza", reason="stanza extra not installed")
+try:
+    import stanza
 
-from risk_assessment.classification.unstructured.stanza_ner import STANZAEntityExtractor
+    from risk_assessment.classification.unstructured.stanza_ner import STANZAEntityExtractor
+
+    _has_stanza = True
+except ImportError:
+    _has_stanza = False
+
+pytestmark = pytest.mark.skipif(not _has_stanza, reason="stanza extra not installed")
 
 _TEXT = """
 Ireland (/ˈaɪərlənd/ (listen) YRE-lənd; Irish: Éire [ˈeːɾʲə] (listen); Ulster-Scots: Airlann [ˈɑːrlən]) is an island in the North Atlantic Ocean, in north-western Europe. It is separated from Great Britain to its east by the North Channel, the Irish Sea, and St George's Channel. Ireland is the second-largest island of the British Isles, the third-largest in Europe, and the twentieth-largest on Earth.[8]

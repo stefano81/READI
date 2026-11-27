@@ -6,6 +6,7 @@ import time so these tests run regardless of whether the library is installed.
 
 import sys
 from types import ModuleType
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -53,12 +54,23 @@ setattr(_presidio_stub, "RecognizerResult", _RecognizerResult)
 setattr(_nlp_engine_stub, "NlpEngine", _NlpEngine)
 
 # Register the stubs before importing the module under test.
-sys.modules.setdefault("presidio_analyzer", _presidio_stub)
-sys.modules.setdefault("presidio_analyzer.nlp_engine", _nlp_engine_stub)
+_stubbed_modules = {
+    name: stub
+    for name, stub in (("presidio_analyzer", _presidio_stub), ("presidio_analyzer.nlp_engine", _nlp_engine_stub))
+    if name not in sys.modules
+}
+sys.modules.update(_stubbed_modules)
 
 # Now it is safe to import – the try/except in presidio.py will succeed.
 from risk_assessment.classification.unstructured import Entity  # noqa: E402
 from risk_assessment.classification.unstructured.presidio import PresidioEntityExtractor  # noqa: E402
+
+# presidio.py keeps its own references to the stub classes, so remove the stubs
+# from sys.modules. Leaving them would break other code importing the real
+# package (e.g. spaCy entry points registered by presidio-analyzer).
+for _name, _stub in _stubbed_modules.items():
+    if sys.modules.get(_name) is _stub:
+        del sys.modules[_name]
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -76,10 +88,8 @@ def _make_extractor(**kwargs) -> PresidioEntityExtractor:
     return PresidioEntityExtractor(type_mapping=TYPE_MAPPING, **kwargs)
 
 
-RecognizerResult = _RecognizerResult
-
-
-def _stub_result(entity_type: str, start: int, end: int, score: float = 0.85) -> RecognizerResult:
+def _stub_result(entity_type: str, start: int, end: int, score: float = 0.85) -> Any:
+    """Return a stub standing in for presidio's RecognizerResult (typed Any: it is not the real class)."""
     return _RecognizerResult(entity_type=entity_type, start=start, end=end, score=score)
 
 
@@ -258,7 +268,7 @@ def test_empty_type_mapping_returns_raw_types():
 def test_build_entity_returns_entity_dataclass():
     extractor = _make_extractor()
     result = _stub_result("PERSON", 3, 11, score=0.88)
-    entity = extractor._build_entity(result)  # ty: ignore[invalid-argument-type]
+    entity = extractor._build_entity(result)
     assert isinstance(entity, Entity)
     assert entity.start == 3
     assert entity.end == 11
@@ -270,7 +280,7 @@ def test_build_entity_returns_entity_dataclass():
 def test_build_entity_score_zero():
     extractor = _make_extractor()
     result = _stub_result("PERSON", 0, 4, score=0.0)
-    entity = extractor._build_entity(result)  # ty: ignore[invalid-argument-type]
+    entity = extractor._build_entity(result)
     assert entity.confidence == pytest.approx(0.0)
 
 
