@@ -43,25 +43,33 @@ def test_spacy_tokenizer_custom_language():
 # STANZASentenceTokenizer — skipped when stanza is not installed
 # ---------------------------------------------------------------------------
 
-pytest.importorskip("stanza", reason="stanza extra not installed")
+try:
+    import stanza
 
-from risk_assessment.readi.external_tokenizers import STANZASentenceTokenizer  # noqa: E402
+    from risk_assessment.readi.external_tokenizers import STANZASentenceTokenizer
+
+    _has_stanza = True
+except ImportError:
+    _has_stanza = False
 
 _MULTI_SENT = "Ireland is an island. It is in the North Atlantic Ocean. The climate is mild."
 
 
+@pytest.mark.skipif(not _has_stanza, reason="stanza extra not installed")
 def test_stanza_sent_tokenize_splits_into_sentences():
     sentences = STANZASentenceTokenizer().sent_tokenize(_MULTI_SENT)
     assert isinstance(sentences, list)
     assert len(sentences) == 3
 
 
+@pytest.mark.skipif(not _has_stanza, reason="stanza extra not installed")
 def test_stanza_sent_tokenize_text_matches_original():
     sentences = STANZASentenceTokenizer().sent_tokenize(_MULTI_SENT)
     for sent in sentences:
         assert sent in _MULTI_SENT
 
 
+@pytest.mark.skipif(not _has_stanza, reason="stanza extra not installed")
 def test_stanza_span_tokenize_returns_spans():
     spans = STANZASentenceTokenizer().span_tokenize(_MULTI_SENT)
     assert isinstance(spans, list)
@@ -69,12 +77,14 @@ def test_stanza_span_tokenize_returns_spans():
     assert all(isinstance(s, tuple) and len(s) == 2 for s in spans)
 
 
+@pytest.mark.skipif(not _has_stanza, reason="stanza extra not installed")
 def test_stanza_span_tokenize_offsets_are_valid():
     spans = STANZASentenceTokenizer().span_tokenize(_MULTI_SENT)
     for start, end in spans:
         assert 0 <= start < end <= len(_MULTI_SENT)
 
 
+@pytest.mark.skipif(not _has_stanza, reason="stanza extra not installed")
 def test_stanza_span_tokenize_consistent_with_sent_tokenize():
     tok = STANZASentenceTokenizer()
     spans = tok.span_tokenize(_MULTI_SENT)
